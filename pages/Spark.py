@@ -132,9 +132,13 @@ if user_message:
     with st.chat_message("assistant"):
         with st.spinner("Spark is thinking..."):
             try:
-                response = get_chatbot_response(
-                    user_message
+                conversation_context = "\n".join(
+                    f"{msg['role']}: {msg['content']}"
+                    for msg in st.session_state.messages[-10:]
                 )
+                response = get_chatbot_response(
+                    conversation_context
+                    )
             except Exception as error:
                 response = (
                     "Unable to respond right now: "
