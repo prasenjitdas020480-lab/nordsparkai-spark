@@ -1,0 +1,30 @@
+{
+  "business": {
+    "name": "NordSparkAI",
+    "website": "https://nordsparkai.com",
+    "email": "",
+    "phone": "",
+    "description": "NordSparkAI provides AI assistants, automation and digital solutions for modern businesses."
+  },
+  "chatbot": {
+    "name": "Spark",
+    "welcome_message": "👋 Hello! I'm Spark, your AI Business Assistant from NordSparkAI. I'm here to help you discover our AI solutions, answer your questions, recommend the right products, and connect you with our team. How can I help you today?",
+    "fallback_message": "I am sorry, I do not have that information yet. Please leave your contact details and the NordSparkAI team will contact you."
+  },
+  "products": [
+    "AI Website Chatbot",
+    "AI Business Assistant",
+    "AI Job Hunter",
+    "AI Automation Solutions"
+  ],
+  "faqs": [
+    {
+      "question": "What is NordSparkAI?",
+      "answer": "NordSparkAI helps businesses use AI assistants, automation and intelligent digital solutions."
+    },
+    {
+      "question": "Can NordSparkAI build a chatbot for my business?",
+      "answer": "Yes. NordSparkAI can create configurable AI assistants for different industries and business needs."
+    }
+  ]
+}
