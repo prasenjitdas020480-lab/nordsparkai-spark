@@ -1,8 +1,10 @@
-import csv
 import json
 from typing import Any
 
-from core.config import CONFIG_FILE, LEADS_FILE
+import requests
+import streamlit as st
+
+from core.config import CONFIG_FILE
 
 
 def load_config() -> dict[str, Any]:
@@ -19,28 +21,54 @@ def save_config(config: dict[str, Any]) -> None:
     """Save chatbot configuration to config.json."""
 
     with CONFIG_FILE.open("w", encoding="utf-8") as file:
-        json.dump(config, file, indent=2, ensure_ascii=False)
+        json.dump(
+            config,
+            file,
+            indent=2,
+            ensure_ascii=False,
+        )
+
+
+def _get_leads_api_url() -> str:
+    """Return the production NordSparkAI Leads API URL."""
+
+    return st.secrets["LEADS_API_URL"]
 
 
 def save_lead(lead: dict[str, str]) -> None:
-    """Append one lead to leads.csv."""
+    """Save a lead to the production Google Sheet."""
 
-    file_exists = LEADS_FILE.exists()
+    payload = {
+        "name": lead.get("Name", "").strip(),
+        "company": lead.get("Company", "").strip(),
+        "email": lead.get("Email", "").strip(),
+        "phone": lead.get("Phone", "").strip(),
+        "requirement": lead.get("Requirement", "").strip(),
+    }
 
-    with LEADS_FILE.open("a", newline="", encoding="utf-8") as file:
-        writer = csv.DictWriter(file, fieldnames=lead.keys())
+    response = requests.post(
+        _get_leads_api_url(),
+        json=payload,
+        timeout=15,
+    )
 
-        if not file_exists:
-            writer.writeheader()
+    response.raise_for_status()
 
-        writer.writerow(lead)
+    result = response.json()
+
+    if not result.get("success"):
+        raise RuntimeError(
+            result.get(
+                "error",
+                "Unable to save lead.",
+            )
+        )
 
 
 def load_leads() -> list[dict[str, str]]:
-    """Load all saved leads."""
+    """
+    Lead retrieval will be connected separately
+    to the protected production dashboard API.
+    """
 
-    if not LEADS_FILE.exists():
-        return []
-
-    with LEADS_FILE.open("r", newline="", encoding="utf-8") as file:
-        return list(csv.DictReader(file))
+    return []
