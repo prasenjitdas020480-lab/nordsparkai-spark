@@ -1,5 +1,6 @@
 {
   "business": {
+    "tenant_key": "prantest",
     "name": "NordSparkAI",
     "website": "https://nordsparkai.com",
     "email": "",
@@ -27,4 +28,4 @@
       "answer": "Yes. NordSparkAI can create configurable AI assistants for different industries and business needs."
     }
   ]
-}
+}    

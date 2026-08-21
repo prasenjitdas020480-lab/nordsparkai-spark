@@ -36,9 +36,29 @@ def _get_leads_api_url() -> str:
 
 
 def save_lead(lead: dict[str, str]) -> None:
-    """Save a lead to the production Google Sheet."""
+    """
+    Send a captured lead to the NordSparkAI Leads API.
+
+    The tenant_key identifies which customer/business
+    owns the lead.
+    """
+
+    config = load_config()
+
+    tenant_key = (
+        config
+        .get("business", {})
+        .get("tenant_key", "")
+        .strip()
+    )
+
+    if not tenant_key:
+        raise RuntimeError(
+            "tenant_key is missing from business configuration."
+        )
 
     payload = {
+        "tenant_key": tenant_key,
         "name": lead.get("Name", "").strip(),
         "company": lead.get("Company", "").strip(),
         "email": lead.get("Email", "").strip(),
